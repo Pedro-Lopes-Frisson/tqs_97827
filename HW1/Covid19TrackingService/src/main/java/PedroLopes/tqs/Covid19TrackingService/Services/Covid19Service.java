@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class Covid19Service {
-  
+
   private static final Logger log = LoggerFactory.getLogger( Covid19Service.class );
   final OkHttpClient okHttpClient = new OkHttpClient.Builder()
     .readTimeout( 60, TimeUnit.SECONDS )
@@ -31,11 +31,11 @@ public class Covid19Service {
     .addConverterFactory( GsonConverterFactory.create() )
     .client( okHttpClient )
     .build().create( APIJonhsHopkinsCSSE.class );
-  
+
   @Autowired CacheManager cacheManager;
-  
+
   public ResponseEntity<Object> getReportForCityAndDate( String city, String date ) {
-    
+
     Call<RootReport> reportCall = retrofit.getSpecificReport( city, date );
     log.debug("REPORT CALL -->"+reportCall.toString() );
     Response<RootReport> reportResponse = null;
@@ -44,13 +44,13 @@ public class Covid19Service {
     } catch (IOException e) {
       throw new RuntimeException( "Connection Timed Out or Service Not reachable" );
     }
-    
+
     if ( reportResponse.code() != 200 ) {
       return ResponseEntity.badRequest().body( "{\"error\": \"There is no such data, please try again\"}" );
     }
     return ResponseEntity.ok( reportResponse.body() );
   }
-  
+
   public ResponseEntity<Object> getReportForWorld( String date ) {
     Call<SummaryReport> reportCall = retrofit.getWorldWideReport( date );
     Response<SummaryReport> reportResponse = null;
@@ -59,15 +59,15 @@ public class Covid19Service {
     } catch (IOException e) {
       throw new RuntimeException( "Connection Timed Out or Service Not reachable" );
     }
-    log.info( reportResponse.body().toString() );
-    
+    log.info( reportResponse.raw().body().toString() );
+
     if ( reportResponse.code() != 200 ) {
       return ResponseEntity.badRequest().body( "{\"error\": \"There is no such data, please try again\"}" );
     }
-    return ResponseEntity.ok( reportResponse.raw().body());
+    return ResponseEntity.ok( reportResponse.body());
   }
-  
-  
+
+
   public ResponseEntity<String> getCache() {
     return ResponseEntity.ok(
       "{\"hits\" :" + cacheManager.getNumberHits() +
@@ -75,5 +75,5 @@ public class Covid19Service {
         ", \"requests\" : " + cacheManager.getNumberOfRequests()
         + '}' );
   }
-  
+
 }
