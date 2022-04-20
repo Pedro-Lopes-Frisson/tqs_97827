@@ -1,75 +1,79 @@
 package PedroLopes.tqs.Covid19TrackingService.Services;
 
-import PedroLopes.tqs.Covid19TrackingService.ApiConsumer.Covid19JonhsHopkinsCSSE;
+import PedroLopes.tqs.Covid19TrackingService.ApiConsumer.APIJonhsHopkinsCSSE;
 import PedroLopes.tqs.Covid19TrackingService.Manager.CacheManager;
-import PedroLopes.tqs.Covid19TrackingService.Models.Cache;
 import PedroLopes.tqs.Covid19TrackingService.Models.RootReport;
 import PedroLopes.tqs.Covid19TrackingService.Models.SummaryReport;
+import okhttp3.OkHttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class Covid19Service {
-  @Autowired Covid19JonhsHopkinsCSSE covid19JonhsHopkinsCSSE;
+  
+  private static final Logger log = LoggerFactory.getLogger( Covid19Service.class );
+  final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+    .readTimeout( 60, TimeUnit.SECONDS )
+    .connectTimeout( 60, TimeUnit.SECONDS )
+    .build();
+  final APIJonhsHopkinsCSSE retrofit = new Retrofit.Builder()
+    .baseUrl( "https://covid-19-statistics.p.rapidapi.com/" )
+    .addConverterFactory( GsonConverterFactory.create() )
+    .client( okHttpClient )
+    .build().create( APIJonhsHopkinsCSSE.class );
+  
   @Autowired CacheManager cacheManager;
   
-  public Mono<ResponseEntity<SummaryReport>> getTotalReport( String date ) {
-    StringBuilder sb = new StringBuilder();
-    if ( date.isEmpty() ) {
-      sb.append( "date=" ).append( date ).append( "&" );
+  public ResponseEntity<Object> getReportForCityAndDate( String city, String date ) {
+    
+    Call<RootReport> reportCall = retrofit.getSpecificReport( city, date );
+    log.debug("REPORT CALL -->"+reportCall.toString() );
+    Response<RootReport> reportResponse = null;
+    try {
+      reportResponse = reportCall.execute();
+    } catch (IOException e) {
+      throw new RuntimeException( "Connection Timed Out or Service Not reachable" );
     }
-    Mono<ResponseEntity<SummaryReport>> summaryReportData = covid19JonhsHopkinsCSSE.getTotalReport( date );
     
-    Cache c = new Cache( summaryReportData.toString(), sb.toString() );
-    cacheManager.saveCache( c );
-    return summaryReportData;
-    
+    if ( reportResponse.code() != 200 ) {
+      return ResponseEntity.badRequest().body( "{\"error\": \"There is no such data, please try again\"}" );
+    }
+    return ResponseEntity.ok( reportResponse.body() );
   }
   
-  public Mono<ResponseEntity<RootReport>> getTotalReport( String city,
-                                                          String region_province,
-                                                          String iso,
-                                                          String region_name,
-                                                          String query,
-                                                          String date ) {
-    StringBuilder paramsString = new StringBuilder().append( "?" );
-    if ( city.isEmpty() ) {
-      paramsString.append( "city_name=" ).append( city );
+  public ResponseEntity<Object> getReportForWorld( String date ) {
+    Call<SummaryReport> reportCall = retrofit.getWorldWideReport( date );
+    Response<SummaryReport> reportResponse = null;
+    try {
+      reportResponse = reportCall.execute();
+    } catch (IOException e) {
+      throw new RuntimeException( "Connection Timed Out or Service Not reachable" );
     }
-    if ( iso.isEmpty() ) {
-      paramsString.append( "&iso=" ).append( iso );
-    }
-    if ( region_name.isEmpty() ) {
-      paramsString.append( "&region_name=" ).append( region_name );
-    }
-    if ( iso.isEmpty() ) {
-      paramsString.append( "&iso=" ).append( iso );
-    }
-    if ( query.isEmpty() ) {
-      paramsString.append( "&q=" ).append( query );
-    }
-    if ( date.isEmpty() ) {
-      paramsString.append( "&date=" ).append( date );
-    }
-    if ( region_province.isEmpty() ) {
-      paramsString.append( "&region_province=" ).append( region_province );
-    }
+    log.info( reportResponse.body().toString() );
     
-    Mono<ResponseEntity<RootReport>> reportData =
-      covid19JonhsHopkinsCSSE.getReport(city, region_province, iso,region_name,query,date);
-    
-    Cache c = new Cache( reportData.toString(), paramsString.toString() );
-    
-    cacheManager.saveCache( c );
-    return reportData;
+    if ( reportResponse.code() != 200 ) {
+      return ResponseEntity.badRequest().body( "{\"error\": \"There is no such data, please try again\"}" );
+    }
+    return ResponseEntity.ok( reportResponse.raw().body());
   }
   
-  public ResponseEntity<Object> getCache() {
-    return ResponseEntity.ok().body(
-      "{ 'hits' : " + cacheManager.getNumberHits() + ", 'misses' : " + cacheManager.getNumberMisses() +
-        ", 'requests':" + cacheManager.getNumberOfRequests() + "}" );
+  
+  public ResponseEntity<String> getCache() {
+    return ResponseEntity.ok(
+      "{\"hits\" :" + cacheManager.getNumberHits() +
+        ", \"misses\" : " + cacheManager.getNumberMisses() +
+        ", \"requests\" : " + cacheManager.getNumberOfRequests()
+        + '}' );
   }
+  
 }
-  

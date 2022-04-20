@@ -1,11 +1,14 @@
 package PedroLopes.tqs.Covid19TrackingService.Manager;
 
 import PedroLopes.tqs.Covid19TrackingService.Models.Cache;
+import PedroLopes.tqs.Covid19TrackingService.Models.RootReport;
 import PedroLopes.tqs.Covid19TrackingService.Repository.CacheRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class CacheManager {
@@ -20,7 +23,9 @@ public class CacheManager {
   
   @Scheduled(fixedRate = 5000)
   public void manageCache() {
-    repository.findBytimeRequestWasMadeLessThan( System.currentTimeMillis() );
+    List<Cache> cacheList = repository.findBytimeRequestWasMadeLessThan( System.currentTimeMillis() );
+    cacheList.forEach( cache -> repository.delete( cache ) );
+    
   }
   
   public Object inCache( String requestUrl ) {
