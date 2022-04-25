@@ -1,12 +1,13 @@
-package PedroLopes.tqs.Covid19TrackingService.Models;
+package pedroLopes.tqs.covid19trackingservice.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorResponse {
+public class ErrorResponse implements Serializable  {
   @Getter
   public ErrorResponseData error;
 }

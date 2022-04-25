@@ -1,8 +1,9 @@
-package PedroLopes.tqs.Covid19TrackingService.Models;
+package pedroLopes.tqs.covid19trackingservice.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class RootReport {
+public class RootReport implements Serializable {
   @Getter
   public ArrayList<ReportData> data;
   

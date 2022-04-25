@@ -1,6 +1,6 @@
-package PedroLopes.tqs.Covid19TrackingService.Repository;
+package pedroLopes.tqs.covid19trackingservice.repository;
 
-import PedroLopes.tqs.Covid19TrackingService.Models.Cache;
+import pedroLopes.tqs.covid19trackingservice.models.Cache;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

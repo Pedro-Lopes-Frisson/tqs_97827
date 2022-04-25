@@ -1,16 +1,18 @@
-package PedroLopes.tqs.Covid19TrackingService.Models;
+package pedroLopes.tqs.covid19trackingservice.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
+import java.io.Serializable;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class SummaryReport {
+public class SummaryReport implements Serializable {
   /*
   Total report endpoint first object
   url: 'https://covid-19-statistics.p.rapidapi.com/reports/total'
@@ -18,5 +20,6 @@ public class SummaryReport {
   @JsonProperty("data")
   @SerializedName( value="data" )
   @Getter
-  SummaryReportData summaryReportData;
+  @Setter
+  public SummaryReportData summaryReportData;
 }

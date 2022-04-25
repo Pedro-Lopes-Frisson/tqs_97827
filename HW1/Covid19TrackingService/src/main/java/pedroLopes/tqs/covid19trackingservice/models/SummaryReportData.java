@@ -1,4 +1,4 @@
-package PedroLopes.tqs.Covid19TrackingService.Models;
+package pedroLopes.tqs.covid19trackingservice.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,12 +7,14 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class SummaryReportData {
+public class SummaryReportData implements Serializable {
   /*
   Total report endpoit data from   url: 'https://covid-19-statistics.p.rapidapi.com/reports/total'
    */
@@ -51,10 +53,3 @@ public class SummaryReportData {
   Float fatality_rate;
 }
 
-
-/*
-{
-    "data": {
-    }
-}
- */

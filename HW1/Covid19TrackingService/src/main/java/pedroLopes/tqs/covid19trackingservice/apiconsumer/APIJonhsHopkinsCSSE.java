@@ -1,8 +1,8 @@
-package PedroLopes.tqs.Covid19TrackingService.ApiConsumer;
+package pedroLopes.tqs.covid19trackingservice.apiconsumer;
 
 
-import PedroLopes.tqs.Covid19TrackingService.Models.RootReport;
-import PedroLopes.tqs.Covid19TrackingService.Models.SummaryReport;
+import pedroLopes.tqs.covid19trackingservice.models.RootReport;
+import pedroLopes.tqs.covid19trackingservice.models.SummaryReport;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;

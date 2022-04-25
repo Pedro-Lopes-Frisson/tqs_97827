@@ -26,6 +26,11 @@ function MainNav(){
                 <Nav.Link>City List</Nav.Link>
               </LinkContainer>
             </Nav>
+            <Nav className="mr-auto">
+              <LinkContainer to="/cache">
+                <Nav.Link>Cache</Nav.Link>
+              </LinkContainer>
+            </Nav>
           </Navbar.Collapse>
         </Navbar>
   );
