@@ -21,5 +21,5 @@ public class SummaryReport implements Serializable {
   @SerializedName( value="data" )
   @Getter
   @Setter
-  public SummaryReportData summaryReportData;
+  SummaryReportData summaryReportData;
 }

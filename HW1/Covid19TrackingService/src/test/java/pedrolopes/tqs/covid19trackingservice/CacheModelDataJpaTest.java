@@ -39,7 +39,7 @@ public class CacheModelDataJpaTest {
     Cache rootReportFound = repository.findByUrlRequest( "https://covid-19-statistics.p.rapidapi" +
       ".com/reports?city_name=Autauga&date=2020-04-11" );
     assertThat( rootReportFound ).isNotNull();
-    assertThat( ( (RootReport) rootReportFound.getValue() ).getData().get( 0 ).date ).isEqualTo( "2020-04-11" );
+    assertThat( ( (RootReport) rootReportFound.getValue() ).getData().get( 0 ).getDate() ).isEqualTo( "2020-04-11" );
   }
   
   @Test

@@ -13,6 +13,7 @@ import pedrolopes.tqs.covid19trackingservice.models.RootReport;
 import pedrolopes.tqs.covid19trackingservice.models.SummaryReport;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Service public class Covid19Service {
   
@@ -37,11 +38,11 @@ import java.io.Serializable;
     RootReport rootReportSaved = null;
     
     // save object in cache if response has a body which isn't null and if the status code is 200
-    if ( reportResponse.hasBody() && reportResponse.getBody() != null &&
-      reportResponse.getStatusCode() == HttpStatus.OK ) {
-      assert cacheManager!= null;
+    if ( reportResponse.getStatusCode() == HttpStatus.OK ) {
+      assert cacheManager != null;
       rootReportSaved = (RootReport) cacheManager.saveCache(
-        new Cache( urlCall, (Serializable) reportResponse.getBody() ) ).getValue();
+        new Cache( Objects.requireNonNull( urlCall ),
+          (Serializable) Objects.requireNonNull( reportResponse.getBody() ) ) ).getValue();
       
       log.info( String.format( "\nObject was saved %s", rootReportSaved ) );
     }

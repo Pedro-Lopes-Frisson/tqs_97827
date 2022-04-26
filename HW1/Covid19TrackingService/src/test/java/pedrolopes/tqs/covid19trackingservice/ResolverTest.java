@@ -62,7 +62,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
     RecordedRequest request = mockWebServer.takeRequest();
     assertThat( request.getPath() ).isEqualTo( "/reports?city_name=Autauga&date=2020-04-11" );
     System.out.println( autauga.getBody() );
-    AssertionsForClassTypes.assertThat( ( (RootReport) autauga.getBody() ).getData().get( 0 ).date )
+    AssertionsForClassTypes.assertThat( ( (RootReport) autauga.getBody() ).getData().get( 0 ).getDate() )
                            .isEqualTo( "2020-04-11" );
   }
   

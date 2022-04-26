@@ -159,6 +159,7 @@ public class ServiceTest {
     verify( cacheManager, times( 1 ) ).getNumberOfRequests();
   }
   
+  @Test
   public void testWhenValueInCacheGetCacheShouldReturn1Miss() {
     
     SummaryReport summaryReport = new SummaryReport( new SummaryReportData(

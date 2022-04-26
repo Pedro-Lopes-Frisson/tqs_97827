@@ -13,6 +13,6 @@ import java.util.ArrayList;
 @EqualsAndHashCode
 public class RootReport implements Serializable {
   @Getter
-  public ArrayList<ReportData> data;
+  ArrayList<ReportData> data;
   
 }
