@@ -30,12 +30,6 @@ class CacheManagerTest {
   @BeforeEach
   void setUp() {
     
-    
-    Instant.now( Clock.fixed(
-      Instant.parse( "2018-08-22T10:00:00Z" ),
-      ZoneOffset.UTC ) );
-    
-    constantClock = Clock.fixed( ofEpochMilli( 0 ), ZoneId.systemDefault() );
     objectToBeCached = new Cache( urlWorldReport, new SummaryReport( new SummaryReportData(
       "2020-04-11", "2020-04-11 22:52:46", (long) 1771514L, (long) 79795L, 108502L, (long) 5977L, (long) 402110L,
       26014L, 1260902L, 47804L, (float) 0.0612
@@ -60,7 +54,7 @@ class CacheManagerTest {
     when( repository.findByUrlRequest( urlWorldReport ) ).thenReturn( null );
     Object cachedObject = cacheManager.inCache( urlWorldReport );
     assertThat( cachedObject ).isNull();
-    assertThat( cacheManager.getNumberHits() ).isEqualTo( 0 );
+    assertThat( cacheManager.getNumberHits() ).isZero();
     assertThat( cacheManager.getNumberOfRequests() ).isEqualTo( 1 );
     assertThat( cacheManager.getNumberMisses() ).isEqualTo( 1 );
     verify( repository, times( 1 ) ).findByUrlRequest( urlWorldReport );
@@ -78,7 +72,7 @@ class CacheManagerTest {
     Object cachedObject = cacheManager.inCache( urlWorldReport );
     assertThat( cachedObject ).isNull();
     
-    assertThat( cacheManager.getNumberHits() ).isEqualTo( 0 );
+    assertThat( cacheManager.getNumberHits() ).isZero();
     assertThat( cacheManager.getNumberOfRequests() ).isEqualTo( 1 );
     assertThat( cacheManager.getNumberMisses() ).isEqualTo( 1 );
     

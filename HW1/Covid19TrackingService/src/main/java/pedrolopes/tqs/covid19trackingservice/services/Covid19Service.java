@@ -29,8 +29,8 @@ import java.util.Objects;
     
     // Object was in cache if the variable is not null
     if ( objectInCache != null ) {
-      log.info( "Returning cached object {}", (RootReport) objectInCache.getValue() );
-      return ResponseEntity.ok( (RootReport) objectInCache.getValue() );
+      log.info( "Returning cached object {}", objectInCache.getValue() );
+      return ResponseEntity.ok( objectInCache.getValue() );
     }
     
     log.info( "REPORT CALL --> {}", urlCall );
@@ -58,7 +58,7 @@ import java.util.Objects;
     // Object was in cache if the variable is not null
     if ( objectInCache != null ) {
       log.info( "Returning cached Object" );
-      return ResponseEntity.ok( (SummaryReport) objectInCache.getValue() );
+      return ResponseEntity.ok( objectInCache.getValue() );
     }
     
     ResponseEntity<Object> reportResponse = resolver.getWorldReport( date );

@@ -7,7 +7,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import pedrolopes.tqs.covid19trackingservice.models.*;
 import pedrolopes.tqs.covid19trackingservice.repository.CacheRepository;
 
-import java.time.*;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 
 import static java.time.Instant.ofEpochMilli;
@@ -45,7 +48,7 @@ class CacheModelDataJpaTest {
   void savingDataOfWorldReportAtDate_thenWhenFindDataReturnData() {
     
     SummaryReport summaryReport = new SummaryReport( new SummaryReportData(
-      "2020-04-11", "2020-04-11 22:52:46", (long) 1771514L, (long) 79795L, 108502L, (long) 5977L, (long) 402110L,
+      "2020-04-11", "2020-04-11 22:52:46",  1771514L,  79795L, 108502L,  5977L,  402110L,
       26014L, 1260902L, 47804L, (float) 0.0612
     ) );
     
@@ -70,13 +73,11 @@ class CacheModelDataJpaTest {
     Clock constantClock = Clock.fixed( ofEpochMilli( 0 ), ZoneId.systemDefault() );
     
     SummaryReport summaryReport = new SummaryReport( new SummaryReportData(
-      "2020-04-11", "2020-04-11 22:52:46", (long) 1771514L, (long) 79795L, 108502L, (long) 5977L, (long) 402110L,
+      "2020-04-11", "2020-04-11 22:52:46", 1771514L, 79795L, 108502L, 5977L, 402110L,
       26014L, 1260902L, 47804L, (float) 0.0612
     ) );
     
     StringBuilder url = new StringBuilder().append( "https://covid-19-statistics.p.rapidapi.com/reports/total?date=" );
-    long startDelay = 30000; // delay of the first Cache
-    long fixedDelay = 10000; // delay between the other ones
     
     ArrayList<Cache> listOriginal = new ArrayList<>();
     // Subtract ttl's so that time request was made is lower then current Time in millis
@@ -90,22 +91,21 @@ class CacheModelDataJpaTest {
     entityManager.persistAndFlush( listOriginal.get( 1 ) );
     entityManager.persistAndFlush( listOriginal.get( 2 ) );
     
-    Clock clockFuture10Millis = Clock.offset( constantClock, Duration.ofMillis( 10 ) ); // go 10 millis to the future
     
     ArrayList<Cache> listCachedObjects =
-      (ArrayList<Cache>) repository.findBytimeRequestWasMadeLessThan( clockFuture10Millis.millis() );
+      (ArrayList<Cache>) repository.findBytimeRequestWasMadeLessThan( System.currentTimeMillis() );
     
     //No Objects Should have been returned
-    assertThat( listCachedObjects.size() ).isEqualTo( 1 );
+    assertThat( 1 ).isEqualTo( listCachedObjects.size() );
     
-    Clock clockFutureFuture40001 = Clock.offset( constantClock, Duration.ofMillis( 40001 ) );
     
     listCachedObjects =
-      (ArrayList<Cache>) repository.findBytimeRequestWasMadeLessThan( clockFuture10Millis.millis() );
+      (ArrayList<Cache>) repository.findBytimeRequestWasMadeLessThan( System.currentTimeMillis() );
     
-    assertThat( listCachedObjects.size() ).isEqualTo( 1 );
+    assertThat( 1 ).isEqualTo( listCachedObjects.size() );
     assertThat( listCachedObjects.get( 0 ).getUrlRequest() ).contains( "2020-04-11" );
   }
+  
   
   @Test
   void testGiven3CachedObjectsSavedWhenDeleteOneOfThemTheReaminingShouldRemainThere() {
@@ -150,7 +150,7 @@ class CacheModelDataJpaTest {
     entityManager.persistAndFlush( objectToDelete );
     
     assertThat( repository.findByUrlRequest( url ) ).isNotNull();
-    repository.delete(objectToDelete);
+    repository.delete( objectToDelete );
     assertThat( repository.findByUrlRequest( url ) ).isNull();
   }
   

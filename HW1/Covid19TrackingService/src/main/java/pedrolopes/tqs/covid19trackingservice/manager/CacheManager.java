@@ -37,9 +37,6 @@ public class CacheManager {
     this.numberOfRequests++;
     Cache inMem = repository.findByUrlRequest( requestUrl );
     
-    log.info( "{}", Clock.systemUTC().millis() );
-    log.info( "{}", Clock.systemUTC().millis() );
-    log.info( "{}", Clock.systemUTC().millis() );
     if ( inMem == null || inMem.getTimeRequestWasMade() < Clock.systemUTC().millis() ) {
       log.info( "{}", inMem != null ? inMem.getTimeRequestWasMade() : Clock.systemUTC().millis() );
       log.info( "Object was not on cache or it was already timed out therefore it was removed manually" );

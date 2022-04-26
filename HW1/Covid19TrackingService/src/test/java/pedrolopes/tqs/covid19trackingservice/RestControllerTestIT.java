@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = Covid19TrackingServiceApplication.class)
 @AutoConfigureMockMvc
-public class RestControllerTestIT {
+ class RestControllerTestIT {
   @Autowired
   private MockMvc mvc;
   
@@ -27,7 +27,7 @@ public class RestControllerTestIT {
   private CacheRepository repository;
   
   @AfterEach
-  public void resetDb() {
+   void resetDb() {
     repository.deleteAll();
   }
   
