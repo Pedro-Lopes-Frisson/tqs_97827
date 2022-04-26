@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import pedrolopes.tqs.covid19trackingservice.models.Cache;
 import pedrolopes.tqs.covid19trackingservice.repository.CacheRepository;
 
+import java.time.Clock;
 import java.util.List;
 
 @Component
@@ -36,7 +37,11 @@ public class CacheManager {
     this.numberOfRequests++;
     Cache inMem = repository.findByUrlRequest( requestUrl );
     
-    if ( inMem == null || inMem.getTimeRequestWasMade() < System.currentTimeMillis() ) {
+    log.info( "{}", Clock.systemUTC().millis() );
+    log.info( "{}", Clock.systemUTC().millis() );
+    log.info( "{}", Clock.systemUTC().millis() );
+    if ( inMem == null || inMem.getTimeRequestWasMade() < Clock.systemUTC().millis() ) {
+      log.info( "{}", inMem != null ? inMem.getTimeRequestWasMade() : Clock.systemUTC().millis() );
       log.info( "Object was not on cache or it was already timed out therefore it was removed manually" );
       repository.deleteByUrlRequest( requestUrl );
       this.numberMisses++;

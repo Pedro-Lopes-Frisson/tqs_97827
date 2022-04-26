@@ -70,7 +70,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
     
     Clock constantClock = Clock.fixed( ofEpochMilli( 0 ), ZoneId.systemDefault() );
     
-    // the 0 duration returns to the same clock:
     SummaryReport summaryReport = new SummaryReport( new SummaryReportData(
       "2020-04-11", "2020-04-11 22:52:46", (long) 1771514L, (long) 79795L, 108502L, (long) 5977L, (long) 402110L,
       26014L, 1260902L, 47804L, (float) 0.0612
@@ -81,9 +80,12 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
     long fixedDelay = 10000; // delay between the other ones
     
     ArrayList<Cache> listOriginal = new ArrayList<>();
-    listOriginal.add( new Cache( startDelay, url.append( "2020-04-11" ).toString(), summaryReport ) );
-    listOriginal.add( new Cache( startDelay + fixedDelay, url.append( "2020-04-12" ).toString(), summaryReport ) );
-    listOriginal.add( new Cache( startDelay + 2 * fixedDelay, url.append( "2020-04-13" ).toString(), summaryReport ) );
+    // Subtract ttl's so that time request was made is lower then current Time in millis
+    listOriginal.add( new Cache( -System.currentTimeMillis(), url.append( "2020-04-11" ).toString(), summaryReport ) );
+    
+    
+    listOriginal.add( new Cache( url.append( "2020-04-12" ).toString(), summaryReport ) );
+    listOriginal.add( new Cache( url.append( "2020-04-13" ).toString(), summaryReport ) );
     
     entityManager.persistAndFlush( listOriginal.get( 0 ) );
     entityManager.persistAndFlush( listOriginal.get( 1 ) );
@@ -95,17 +97,15 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
       (ArrayList<Cache>) repository.findBytimeRequestWasMadeLessThan( clockFuture10Millis.millis() );
     
     //No Objects Should have been returned
-    assertThat(listCachedObjects.size()).isEqualTo( 0 );
+    assertThat(listCachedObjects.size()).isEqualTo( 1 );
   
     Clock clockFutureFuture40001 = Clock.offset( constantClock, Duration.ofMillis( 40001 ) );
   
     listCachedObjects =
       (ArrayList<Cache>) repository.findBytimeRequestWasMadeLessThan( clockFuture10Millis.millis() );
-    assertThat(
-      listCachedObjects.stream().map( Cache::getTimeRequestWasMade )
-                       .collect( Collectors.toList() ) ).isEqualTo(
-      listOriginal.stream().filter( (Cache c) -> c.getTimeRequestWasMade() < clockFutureFuture40001.millis() ).map( Cache::getTimeRequestWasMade ).collect(
-        Collectors.toList()) );
+    
+    assertThat( listCachedObjects.size() ).isEqualTo( 1 );
+    assertThat( listCachedObjects.get( 0 ).getUrlRequest() ).contains( "2020-04-11" );
   }
   
   @Test
