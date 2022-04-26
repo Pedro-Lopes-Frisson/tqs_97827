@@ -44,7 +44,7 @@ import java.util.Objects;
         new Cache( Objects.requireNonNull( urlCall ),
           (Serializable) Objects.requireNonNull( reportResponse.getBody() ) ) ).getValue();
       
-      log.info( String.format( "\nObject was saved %s", rootReportSaved ) );
+      log.info( "\nObject was saved {}", rootReportSaved );
     }
     
     return reportResponse;
@@ -55,7 +55,7 @@ import java.util.Objects;
     log.info( "Summary Report CALL --> {}", urlCall );
     Cache objectInCache = (Cache) cacheManager.inCache( urlCall );
     
-    log.info( String.format( "Cached Object Returned = %s", objectInCache ) );
+    log.info( "Cached Object Returned ={}", objectInCache );
     // Object was in cache if the variable is not null
     if ( objectInCache != null ) {
       log.info( "Returning cached Object" );
@@ -69,7 +69,7 @@ import java.util.Objects;
       SummaryReport summaryReportSaved = (SummaryReport) cacheManager.saveCache(
         new Cache( urlCall, (Serializable) reportResponse.getBody() ) ).getValue();
       
-      log.info( String.format( "%s\nObject was saved", summaryReportSaved ) );
+      log.info(  "{}%nObject was saved", summaryReportSaved );
     }
     return reportResponse;
   }

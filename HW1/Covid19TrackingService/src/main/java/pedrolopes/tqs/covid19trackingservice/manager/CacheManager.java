@@ -26,7 +26,7 @@ public class CacheManager {
   public void manageCache() {
     List<Cache> cacheList = repository.findBytimeRequestWasMadeLessThan( System.currentTimeMillis() );
     cacheList.forEach( cache -> {
-      log.info( String.format( "cache %s  was eliminated.", cache.getUrlRequest() ) );
+      log.info( "cache {}  was eliminated.", cache.getUrlRequest() );
       repository.delete( cache );
     } );
     
@@ -48,7 +48,7 @@ public class CacheManager {
   }
   
   public Cache saveCache( Cache c ) {
-    log.info( String.format("caching Object for request: %s " , c.getUrlRequest()) );
+    log.info( "caching Object for request: {} ", c.getUrlRequest() );
     return repository.save( c );
   }
   

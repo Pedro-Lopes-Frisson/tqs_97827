@@ -2,6 +2,7 @@ package pedrolopes.tqs.covid19trackingservice.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
 import java.io.Serializable;
@@ -20,6 +21,7 @@ public class RegionReportData implements Serializable  {
   String province;
   String lat;
   @JsonProperty("long")
+  @SerializedName("long")
   String mylong;
   ArrayList<CityReportData> cities;
 }
