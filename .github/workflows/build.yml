@@ -5,9 +5,9 @@ on:
       - master
   pull_request:
     types: [opened, synchronize, reopened]
-  defaults:
-    run:
-      working-directory: HW1/Covid19TrackingService
+defaults:
+  run:
+    working-directory: HW1/Covid19TrackingService
 jobs:
   build:
     name: Build
