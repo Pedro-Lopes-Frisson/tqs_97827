@@ -3,6 +3,7 @@ package pedrolopes.tqs.covid19trackingservice.apiconsumer;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import pedrolopes.tqs.covid19trackingservice.models.RootReport;
@@ -67,7 +68,7 @@ public class Resolver {
     }
   
     if ( reportResponse.code() != 200 ) {
-      return ResponseEntity.badRequest().body( "{\"error\": \"Request resulted in an invalid operation\"}" );
+      return ResponseEntity.status( HttpStatus.UNPROCESSABLE_ENTITY).body( "{\"error\": \"Request resulted in an invalid operation\"}" );
     }
     
     // save object in cache
@@ -89,9 +90,9 @@ public class Resolver {
       return ResponseEntity.internalServerError().body( "{ \"error\" : \"Service is temporary unavailable." +
         "Please try again later\"}" );
     }
-    
+  
     if ( reportResponse.code() != 200 ) {
-      return ResponseEntity.badRequest().body( "{\"error\": \"Request resulted in an invalid operation\"}" );
+      return ResponseEntity.status( HttpStatus.UNPROCESSABLE_ENTITY).body( "{\"error\": \"Request resulted in an invalid operation\"}" );
     }
     
     
