@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import pedrolopes.tqs.covid19trackingservice.apiconsumer.Resolver;
 import pedrolopes.tqs.covid19trackingservice.manager.CacheManager;
-import pedroLopes.tqs.covid19trackingservice.models.*;
 import pedrolopes.tqs.covid19trackingservice.models.*;
 import pedrolopes.tqs.covid19trackingservice.repository.CacheRepository;
 import pedrolopes.tqs.covid19trackingservice.services.Covid19Service;

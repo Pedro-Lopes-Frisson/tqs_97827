@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import pedrolopes.tqs.covid19trackingservice.controller.RestControllerCovid19;
-import pedroLopes.tqs.covid19trackingservice.models.*;
 import pedrolopes.tqs.covid19trackingservice.services.Covid19Service;
 import pedrolopes.tqs.covid19trackingservice.models.*;
 
