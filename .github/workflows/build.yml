@@ -3,15 +3,16 @@ on:
   push:
     branches:
       - master
+      - main
   pull_request:
     types: [opened, synchronize, reopened]
-defaults:
-  run:
-    working-directory: HW1/Covid19TrackingService
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: HW1/Covid19TrackingService
     steps:
       - uses: actions/checkout@v2
         with:
