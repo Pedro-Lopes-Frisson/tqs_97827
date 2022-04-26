@@ -26,7 +26,7 @@ public class RestControllerCovid19 {
     ResponseEntity<Object> toBeReturned = service.getReportForWorld( date.orElse(
       LocalDateTime.now().format( DateTimeFormatter.ofPattern( "yyyy-MM-dd" ) ) ) );
     
-    log.info(  "Value inside body {}", toBeReturned.getBody() );
+    log.info( "Value inside body {}", toBeReturned.getBody() );
     return toBeReturned;
   }
   
@@ -37,7 +37,7 @@ public class RestControllerCovid19 {
     
     ResponseEntity<Object> toBeReturned = service.getReportForCityAndDate( city.orElse( "" ),
       date.orElse( LocalDateTime.now().format( DateTimeFormatter.ofPattern( "yyyy-MM-dd" ) ) ) );
-    log.info( String.format( "Value inside body %s", toBeReturned.getBody() ) );
+    log.info( "Value inside body {}", toBeReturned.getBody() );
     return toBeReturned;
   }
   

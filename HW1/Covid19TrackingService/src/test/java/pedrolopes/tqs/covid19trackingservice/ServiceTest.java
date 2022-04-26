@@ -124,7 +124,70 @@ public class ServiceTest {
     verify( resolver, times( 1 ) ).getUrlForWorldReport( Mockito.any() );
     verify( resolver, times( 1 ) ).getWorldReport( Mockito.any() );
     verify( cacheManager, times( 1 ) ).inCache( Mockito.any() );
+    
   }
   
+  @Test
+  public void testWhenValueInCacheGetCacheShouldReturn1Hit() {
+    
+    SummaryReport summaryReport = new SummaryReport( new SummaryReportData(
+      "2020-04-11", "2020-04-11 22:52:46", (long) 1771514L, (long) 79795L, 108502L, (long) 5977L, (long) 402110L,
+      26014L, 1260902L, 47804L, (float) 0.0612
+    ) );
+    
+    String url = "https://covid-19-statistics.p.rapidapi.com/reports/total?date=2020-04-11";
+    
+    when( resolver.getUrlForWorldReport( Mockito.any() ) ).thenReturn( url );
+    when( cacheManager.inCache( url ) ).thenReturn( new Cache( url, summaryReport ) );
+    when( cacheManager.getNumberMisses() ).thenReturn( 0 );
+    when( cacheManager.getNumberHits() ).thenReturn( 1 );
+    when( cacheManager.getNumberOfRequests() ).thenReturn( 1 );
+    
+    ResponseEntity<Object> responseEntity = service.getReportForWorld( "2020-04-11" );
+    assertThat( responseEntity.getStatusCode() ).isEqualTo( HttpStatus.OK );
+    
+    ResponseEntity<Object> cacheEntity = service.getCache();
+    assertThat( (String) cacheEntity.getBody() ).isEqualTo(
+      String.format( "{\"hits\": %d, \"misses\": %d, \"requests\": %d}", 1, 0, 1
+      ) );
+    
+    verify( resolver, times( 1 ) ).getUrlForWorldReport( Mockito.any() );
+    verify( resolver, times( 0 ) ).getWorldReport( Mockito.any() );
+    verify( cacheManager, times( 1 ) ).inCache( Mockito.any() );
+    verify( cacheManager, times( 1 ) ).getNumberHits();
+    verify( cacheManager, times( 1 ) ).getNumberMisses();
+    verify( cacheManager, times( 1 ) ).getNumberOfRequests();
+  }
+  
+  public void testWhenValueInCacheGetCacheShouldReturn1Miss() {
+    
+    SummaryReport summaryReport = new SummaryReport( new SummaryReportData(
+      "2020-04-11", "2020-04-11 22:52:46", (long) 1771514L, (long) 79795L, 108502L, (long) 5977L, (long) 402110L,
+      26014L, 1260902L, 47804L, (float) 0.0612
+    ) );
+    
+    String url = "https://covid-19-statistics.p.rapidapi.com/reports/total?date=2020-04-11";
+    
+    when( resolver.getUrlForWorldReport( Mockito.any() ) ).thenReturn( url );
+    when( cacheManager.inCache( url ) ).thenReturn( new Cache( url, summaryReport ) );
+    when( cacheManager.getNumberMisses() ).thenReturn( 1 );
+    when( cacheManager.getNumberHits() ).thenReturn( 0 );
+    when( cacheManager.getNumberOfRequests() ).thenReturn( 1 );
+    
+    ResponseEntity<Object> responseEntity = service.getReportForWorld( "2020-04-11" );
+    assertThat( responseEntity.getStatusCode() ).isEqualTo( HttpStatus.OK );
+    
+    ResponseEntity<Object> cacheEntity = service.getCache();
+    assertThat( (String) cacheEntity.getBody() ).isEqualTo(
+      String.format( "{\"hits\": %d, \"misses\": %d, \"requests\": %d}", 0,1, 1
+      ) );
+    
+    verify( resolver, times( 1 ) ).getUrlForWorldReport( Mockito.any() );
+    verify( resolver, times( 0 ) ).getWorldReport( Mockito.any() );
+    verify( cacheManager, times( 1 ) ).inCache( Mockito.any() );
+    verify( cacheManager, times( 1 ) ).getNumberHits();
+    verify( cacheManager, times( 1 ) ).getNumberMisses();
+    verify( cacheManager, times( 1 ) ).getNumberOfRequests();
+  }
   
 }

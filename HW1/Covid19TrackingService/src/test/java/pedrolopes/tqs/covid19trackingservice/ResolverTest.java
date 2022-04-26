@@ -62,7 +62,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
     RecordedRequest request = mockWebServer.takeRequest();
     assertThat( request.getPath() ).isEqualTo( "/reports?city_name=Autauga&date=2020-04-11" );
     System.out.println( autauga.getBody() );
-    AssertionsForClassTypes.assertThat( ( (RootReport) autauga.getBody() ).getData().get( 0 ).date ).isEqualTo( "2020-04-11" );
+    AssertionsForClassTypes.assertThat( ( (RootReport) autauga.getBody() ).getData().get( 0 ).date )
+                           .isEqualTo( "2020-04-11" );
   }
   
   
@@ -106,8 +107,36 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
     mockWebServer.enqueue( mockedResponse );
     
     ResponseEntity<Object> responseEntitySpecific = resolver.getSpecificReportFor( "Autauga", "20-1-1" );
-    assertThat(  autauga.getStatusCodeValue() ).isEqualTo( 422 );
+    assertThat( autauga.getStatusCodeValue() ).isEqualTo( 422 );
     
   }
   
+  @Test
+  public void testWhenApiReturnsEmptyBodyReturnErrorMessage() {
+    
+    MockResponse mockedResponse =
+      new MockResponse().addHeader( "Content-Type", "application/json; charset=utf-8" );
+    
+    mockWebServer.enqueue( mockedResponse );
+    
+    ResponseEntity<Object> autauga = resolver.getWorldReport( "2-04-11" );
+    assertThat( autauga.getStatusCodeValue() ).isEqualTo( 500 );
+    
+    mockWebServer.enqueue( mockedResponse );
+    
+    ResponseEntity<Object> responseEntitySpecific = resolver.getSpecificReportFor( "Autauga", "20-1-1" );
+    assertThat( autauga.getStatusCodeValue() ).isEqualTo( 500 );
+    
+  }
+  
+  @Test
+  public void testWhenAskedForURLWithValidPath() {
+    
+    assertThat( resolver.getURLForSpecificCityAndDate( "Autauga", "2020-04-11" ) ).contains( "reports?city_name" +
+      "=Autauga&date" +
+      "=2020-04-11" );
+    
+    assertThat( resolver.getUrlForWorldReport( "2020-04-11" ) ).contains( "reports/total?date=2020-04-11" );
+    
+  }
 }

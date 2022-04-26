@@ -64,6 +64,7 @@ import java.io.Serializable;
     ResponseEntity<Object> reportResponse = resolver.getWorldReport( date );
     if ( reportResponse.hasBody() && reportResponse.getBody() != null &&
       reportResponse.getStatusCode() == HttpStatus.OK ) {
+      
       SummaryReport summaryReportSaved = (SummaryReport) cacheManager.saveCache(
         new Cache( urlCall, (Serializable) reportResponse.getBody() ) ).getValue();
       

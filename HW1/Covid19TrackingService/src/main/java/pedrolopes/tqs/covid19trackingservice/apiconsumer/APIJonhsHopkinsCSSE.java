@@ -15,7 +15,7 @@ public interface APIJonhsHopkinsCSSE {
     "X-RapidAPI-Host: covid-19-statistics.p.rapidapi.com",
     "X-RapidAPI-Key: ea0cd966e4msh3606703ced4ea73p1acda7jsn516db04bb8d3"})
   @GET("reports")
-  Call<RootReport> getSpecificReport( @Query("city_name") String city_name,
+  Call<RootReport> getSpecificReport( @Query("city_name") String cityName,
                                       @Query("date") String date );
   
   @GET("reports/total")

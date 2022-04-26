@@ -25,7 +25,7 @@ public class Resolver {
   
   public Resolver() {
     
-    retrofit = new Retrofit.Builder().baseUrl( "https://covid-19-statistics.p.rapidapi.com/" )
+    retrofit = new Retrofit.Builder().baseUrl( DEFAULT_API )
                                      .addConverterFactory( GsonConverterFactory.create() )
                                      .client( okHttpClient ).build()
                                      .create( APIJonhsHopkinsCSSE.class );
@@ -36,9 +36,9 @@ public class Resolver {
     this.retrofit = retrofit;
   }
   
-  public Resolver(String url){
-  
-    retrofit = new Retrofit.Builder().baseUrl(url)
+  public Resolver( String url ) {
+    
+    retrofit = new Retrofit.Builder().baseUrl( url )
                                      .addConverterFactory( GsonConverterFactory.create() )
                                      .client( okHttpClient ).build()
                                      .create( APIJonhsHopkinsCSSE.class );
@@ -57,12 +57,13 @@ public class Resolver {
     
     // Object was in cache if the variable is not null
     
-    log.info( String.format( "REPORT CALL --> %s", reportCall.request().url().url() ) );
+    log.info( "REPORT CALL --> {}", reportCall.request().url().url() );
     Response<RootReport> reportResponse = null;
     try {
       reportResponse = reportCall.execute();
     } catch (IOException e) {
-      throw new RuntimeException( "Connection Timed Out or Service Not reachable" );
+      return ResponseEntity.internalServerError().body( "{ \"error\" : \"Service is temporary unavailable." +
+        "Please try again later\"}" );
     }
     
     if ( reportResponse.code() != 200 ) {
@@ -93,7 +94,8 @@ public class Resolver {
     try {
       reportResponse = summaryReportCall.execute();
     } catch (IOException e) {
-      throw new RuntimeException( "Connection Timed Out or Service Not reachable" );
+      return ResponseEntity.internalServerError().body( "{ \"error\" : \"Service is temporary unavailable." +
+        "Please try again later\"}" );
     }
     
     if ( reportResponse.code() != 200 ) {
@@ -106,7 +108,8 @@ public class Resolver {
     }
     
     if ( reportResponse.body() == null ) {
-      throw new RuntimeException( "Response Body is null" ); // Should not be thrown
+      return ResponseEntity.badRequest().body( "{\"error\": \"There is no such data, please try " +
+        "again\"}" );
     }
     
     
