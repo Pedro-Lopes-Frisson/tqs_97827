@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import pedrolopes.tqs.covid19trackingservice.apiconsumer.Resolver;
 import pedrolopes.tqs.covid19trackingservice.models.RootReport;
@@ -18,7 +19,6 @@ import pedrolopes.tqs.covid19trackingservice.models.SummaryReport;
 import java.io.IOException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class) public class ResolverTest {
   
@@ -90,8 +90,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
     
     mockWebServer.shutdown();
     
-    assertThrows( RuntimeException.class, () -> resolver.getWorldReport( "2020-04-11" ) );
-    assertThrows( RuntimeException.class, () -> resolver.getSpecificReportFor( "Autauga", "2020-04-11" ) );
+    assertThat( resolver.getWorldReport( "2020-04-11" ).getStatusCodeValue() ).isEqualTo(
+      HttpStatus.INTERNAL_SERVER_ERROR.value() );
+    assertThat( resolver.getSpecificReportFor( "Autauga", "2020-04-11" ).getStatusCodeValue() ).isEqualTo( HttpStatus
+      .INTERNAL_SERVER_ERROR.value() );
   }
   
   @Test public void testWhenAPIReturnsErrorMessageReturnErrorToo() {
