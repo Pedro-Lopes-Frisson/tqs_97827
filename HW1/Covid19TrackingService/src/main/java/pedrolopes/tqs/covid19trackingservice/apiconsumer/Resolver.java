@@ -67,14 +67,9 @@ public class Resolver {
     }
   
     if ( reportResponse.code() != 200 ) {
-      try {
-        return ResponseEntity.status( reportResponse.code() ).body( reportResponse.errorBody().string() );
-      } catch (IOException e) {
-        return ResponseEntity.status( reportResponse.code() ).body( "{\"error\": \"There is no such data, please try " +
-          "again\"}" );
-      }
+      return ResponseEntity.badRequest().body( "{\"error\": \"Request resulted in an invalid operation\"}" );
     }
-  
+    
     // save object in cache
     return ResponseEntity.ok( reportResponse.body() );
   }
@@ -96,14 +91,8 @@ public class Resolver {
     }
     
     if ( reportResponse.code() != 200 ) {
-      try {
-        return ResponseEntity.status( reportResponse.code() ).body( reportResponse.errorBody().string() );
-      } catch (IOException e) {
-        return ResponseEntity.status( reportResponse.code() ).body( "{\"error\": \"There is no such data, please try " +
-          "again\"}" );
-      }
+      return ResponseEntity.badRequest().body( "{\"error\": \"Request resulted in an invalid operation\"}" );
     }
-    
     
     
     return ResponseEntity.ok( reportResponse.body() );
