@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Table(name = "Cache")
 public class Cache {
   private static final Logger log = LoggerFactory.getLogger(Cache.class);
-  private static final long timeToLive = 30000;
+  private static final long TIMETOLIVE = 30000;
   @Getter
   @Setter
   private long timeRequestWasMade;
@@ -33,7 +33,7 @@ public class Cache {
   
   public Cache( @NonNull String url, @NonNull Serializable value ) {
     this.value = value;
-    timeRequestWasMade = System.currentTimeMillis() + timeToLive;
+    timeRequestWasMade = System.currentTimeMillis() + TIMETOLIVE;
     urlRequest = url;
   }
   

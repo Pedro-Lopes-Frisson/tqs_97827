@@ -20,7 +20,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ServiceTest {
+ class ServiceTest {
   
   @Mock
   Resolver resolver;
@@ -32,7 +32,7 @@ public class ServiceTest {
   private Covid19Service service;
   
   @Test
-  public void testReportForCachedResult() {
+   void testReportForCachedResult() {
     ReportData reportData =
       new ReportData( "2020-04-11", 3217, 92, 0, 270, 12,
         0, "2020-04-11 22:45:33", 3125, 258, 0.0286
@@ -56,7 +56,7 @@ public class ServiceTest {
   }
   
   @Test
-  public void testReportForNotCachedResult() {
+   void testReportForNotCachedResult() {
     ReportData reportData =
       new ReportData( "2020-04-11", 3217, 92, 0, 270, 12,
         0, "2020-04-11 22:45:33", 3125, 258, 0.0286
@@ -83,7 +83,7 @@ public class ServiceTest {
   
   
   @Test
-  public void testSummaryReportInCache() {
+   void testSummaryReportInCache() {
     SummaryReport summaryReport = new SummaryReport( new SummaryReportData(
       "2020-04-11", "2020-04-11 22:52:46", (long) 1771514L, (long) 79795L, 108502L, (long) 5977L, (long) 402110L,
       26014L, 1260902L, 47804L, (float) 0.0612
@@ -104,7 +104,7 @@ public class ServiceTest {
   }
   
   @Test
-  public void testSummaryReportNotInCache() {
+   void testSummaryReportNotInCache() {
     SummaryReport summaryReport = new SummaryReport( new SummaryReportData(
       "2020-04-11", "2020-04-11 22:52:46", (long) 1771514L, (long) 79795L, 108502L, (long) 5977L, (long) 402110L,
       26014L, 1260902L, 47804L, (float) 0.0612
@@ -128,7 +128,7 @@ public class ServiceTest {
   }
   
   @Test
-  public void testWhenValueInCacheGetCacheShouldReturn1Hit() {
+   void testWhenValueInCacheGetCacheShouldReturn1Hit() {
     
     SummaryReport summaryReport = new SummaryReport( new SummaryReportData(
       "2020-04-11", "2020-04-11 22:52:46", (long) 1771514L, (long) 79795L, 108502L, (long) 5977L, (long) 402110L,
@@ -160,7 +160,7 @@ public class ServiceTest {
   }
   
   @Test
-  public void testWhenValueInCacheGetCacheShouldReturn1Miss() {
+   void testWhenValueInCacheGetCacheShouldReturn1Miss() {
     
     SummaryReport summaryReport = new SummaryReport( new SummaryReportData(
       "2020-04-11", "2020-04-11 22:52:46", (long) 1771514L, (long) 79795L, 108502L, (long) 5977L, (long) 402110L,

@@ -16,7 +16,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class CacheManagerTest {
+class CacheManagerTest {
   final String urlWorldReport = "https://covid-19-statistics.p.rapidapi.com/reports/total?date=2020-04-11";
   @Mock
   CacheRepository repository;
@@ -24,7 +24,7 @@ public class CacheManagerTest {
   Cache objectToBeCached;
   
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     
     objectToBeCached = new Cache( urlWorldReport, new SummaryReport( new SummaryReportData(
       "2020-04-11", "2020-04-11 22:52:46", (long) 1771514L, (long) 79795L, 108502L, (long) 5977L, (long) 402110L,
@@ -34,7 +34,7 @@ public class CacheManagerTest {
   }
   
   @Test
-  public void WhenObjectIsInCacheThenCacheManagerShouldIncrementHitsAndRequests() {
+  void WhenObjectIsInCacheThenCacheManagerShouldIncrementHitsAndRequests() {
     when( repository.findByUrlRequest( urlWorldReport ) ).thenReturn( objectToBeCached );
     Object cachedObject = cacheManager.inCache( urlWorldReport );
     assertThat( cachedObject ).isNotNull();
@@ -46,7 +46,7 @@ public class CacheManagerTest {
   
   
   @Test
-  public void WhenObjectIsNotInCacheThenCacheManagerShouldIncrementMissesAndRequests() {
+  void WhenObjectIsNotInCacheThenCacheManagerShouldIncrementMissesAndRequests() {
     when( repository.findByUrlRequest( urlWorldReport ) ).thenReturn( null );
     Object cachedObject = cacheManager.inCache( urlWorldReport );
     assertThat( cachedObject ).isNull();
@@ -57,7 +57,7 @@ public class CacheManagerTest {
   }
   
   @Test
-  public void WhenObjectIsSavedInCacheReturnTheSameObject() {
+  void WhenObjectIsSavedInCacheReturnTheSameObject() {
     when( repository.save( objectToBeCached ) ).thenReturn( objectToBeCached );
     Cache objectSaved = cacheManager.saveCache( objectToBeCached );
     assertThat( objectSaved ).isEqualTo( objectToBeCached );

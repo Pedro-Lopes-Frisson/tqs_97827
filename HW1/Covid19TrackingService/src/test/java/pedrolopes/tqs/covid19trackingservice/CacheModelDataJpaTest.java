@@ -15,7 +15,7 @@ import static java.time.Instant.ofEpochMilli;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
-public class CacheModelDataJpaTest {
+ class CacheModelDataJpaTest {
   
   
   @Autowired
@@ -25,7 +25,7 @@ public class CacheModelDataJpaTest {
   private CacheRepository repository;
   
   @Test
-  public void savingDataOfSpecificCountryAtDate_thenWhenFindDataReturnData() {
+   void savingDataOfSpecificCountryAtDate_thenWhenFindDataReturnData() {
     ReportData reportData =
       new ReportData( "2020-04-11", 3217, 92, 0, 270, 12,
         0, "2020-04-11 22:45:33", 3125, 258, 0.0286
@@ -43,7 +43,7 @@ public class CacheModelDataJpaTest {
   }
   
   @Test
-  public void savingDataOfWorldReportAtDate_thenWhenFindDataReturnData() {
+   void savingDataOfWorldReportAtDate_thenWhenFindDataReturnData() {
     
     SummaryReport summaryReport = new SummaryReport( new SummaryReportData(
       "2020-04-11", "2020-04-11 22:52:46", (long) 1771514L, (long) 79795L, 108502L, (long) 5977L, (long) 402110L,
@@ -63,7 +63,7 @@ public class CacheModelDataJpaTest {
   }
   
   @Test
-  public void testSavingMultipleCacheObjectAndCallingFindLessThanTTLShouldReturnOnlyTheCorrectValues() {
+   void testSavingMultipleCacheObjectAndCallingFindLessThanTTLShouldReturnOnlyTheCorrectValues() {
     Instant.now( Clock.fixed(
       Instant.parse( "2018-08-22T10:00:00Z" ),
       ZoneOffset.UTC ) );
@@ -109,7 +109,7 @@ public class CacheModelDataJpaTest {
   }
   
   @Test
-  public void testGiven3CachedObjectsSavedWhenDeleteOneOfThemTheReaminingShouldRemainThere(){
+   void testGiven3CachedObjectsSavedWhenDeleteOneOfThemTheReaminingShouldRemainThere(){
   
     // the 0 duration returns to the same clock:
     SummaryReport summaryReport = new SummaryReport( new SummaryReportData(

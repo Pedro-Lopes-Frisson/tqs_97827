@@ -18,14 +18,14 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class Resolver {
   private static final Logger log = LoggerFactory.getLogger( Resolver.class );
-  static String DEFAULT_API = "https://covid-19-statistics.p.rapidapi.com/";
+  static String DEFAULTAPI = "https://covid-19-statistics.p.rapidapi.com/";
   final OkHttpClient okHttpClient =
     new OkHttpClient.Builder().readTimeout( 60, TimeUnit.SECONDS ).connectTimeout( 60, TimeUnit.SECONDS ).build();
   final APIJonhsHopkinsCSSE retrofit;
   
   public Resolver() {
     
-    retrofit = new Retrofit.Builder().baseUrl( DEFAULT_API )
+    retrofit = new Retrofit.Builder().baseUrl( DEFAULTAPI )
                                      .addConverterFactory( GsonConverterFactory.create() )
                                      .client( okHttpClient ).build()
                                      .create( APIJonhsHopkinsCSSE.class );

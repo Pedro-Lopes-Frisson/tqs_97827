@@ -63,11 +63,11 @@ import java.util.Objects;
     }
     
     ResponseEntity<Object> reportResponse = resolver.getWorldReport( date );
-    if ( reportResponse.hasBody() && reportResponse.getBody() != null &&
-      reportResponse.getStatusCode() == HttpStatus.OK ) {
+    if (reportResponse.getStatusCode() == HttpStatus.OK ) {
       
       SummaryReport summaryReportSaved = (SummaryReport) cacheManager.saveCache(
-        new Cache( urlCall, (Serializable) reportResponse.getBody() ) ).getValue();
+        new Cache( Objects.requireNonNull( urlCall ), (Serializable) Objects.requireNonNull(
+          reportResponse.getBody() ) ) ).getValue();
       
       log.info(  "{}%nObject was saved", summaryReportSaved );
     }

@@ -30,5 +30,7 @@ public class CityReportData implements Serializable {
   @JsonProperty("deaths_diff")
   @SerializedName("deaths_diff")
   int deathsDiff;
-  String last_update;
+  @JsonProperty("last_update")
+  @SerializedName("last_update")
+  String lastUpdate;
 }

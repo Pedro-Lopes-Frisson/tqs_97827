@@ -29,20 +29,20 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
 
 
-@WebMvcTest(RestControllerCovid19.class) public class RestControllerTest {
+@WebMvcTest(RestControllerCovid19.class)  class RestControllerTest {
   @MockBean private Covid19Service service;
   
   @Autowired private MockMvc mvc;
   
-  @BeforeEach public void setUp() throws Exception {
+  @BeforeEach  void setUp() throws Exception {
     RestAssuredMockMvc.mockMvc( mvc );
   }
   
-  @AfterEach public void tearDown() throws Exception {
+  @AfterEach  void tearDown() throws Exception {
     RestAssuredMockMvc.reset();
   }
   
-  @Test public void testEndpointFor200StatusCodeAnd1callToServiceGetCacheWillResultIn1CallToServiceGetCache() {
+  @Test  void testEndpointFor200StatusCodeAnd1callToServiceGetCacheWillResultIn1CallToServiceGetCache() {
     ObjectMapper objectMapper = new ObjectMapper();
     ObjectNode objectNode = objectMapper.createObjectNode();
     objectNode.put( "hits", 0 );
@@ -55,7 +55,7 @@ import static org.mockito.Mockito.*;
     verify( service, times( 1 ) ).getCache();
   }
   
-  @Test public void testGetSpecificPlaceDataForAValidDate() {
+  @Test  void testGetSpecificPlaceDataForAValidDate() {
     ReportData reportData =
       new ReportData( "2020-04-11", 3217, 92, 0, 270, 12,
         0, "2020-04-11 22:45:33", 3125, 258, 0.0286
@@ -80,7 +80,7 @@ import static org.mockito.Mockito.*;
     verify( service, times( 1 ) ).getReportForCityAndDate( Mockito.any(), Mockito.any() );
   }
   
-  @Test public void testGetSpecificPlaceDataForAnEmptyDateAndValidCity() {
+  @Test  void testGetSpecificPlaceDataForAnEmptyDateAndValidCity() {
     
     String todaysDate =
       LocalDateTime.now().format( DateTimeFormatter.ofPattern( "yyyy-MM-dd" ) );
@@ -108,7 +108,7 @@ import static org.mockito.Mockito.*;
     verify( service, times( 1 ) ).getReportForCityAndDate( Mockito.any(), eq( todaysDate ) );
   }
   
-  @Test public void testGetReportForInvalidPlace() {
+  @Test  void testGetReportForInvalidPlace() {
     ArrayList<ReportData> arrayListData = new ArrayList<>();
     RootReport rootReport = new RootReport( arrayListData );
     
@@ -127,7 +127,7 @@ import static org.mockito.Mockito.*;
     verify( service, times( 1 ) ).getReportForCityAndDate( Mockito.any(), Mockito.any() );
   }
   
-  @Test public void testGetSpecificPlaceDataForAnInvalidDateAndValidCity() {
+  @Test  void testGetSpecificPlaceDataForAnInvalidDateAndValidCity() {
     when( service.getReportForCityAndDate( Mockito.any(), Mockito.any() ) ).thenReturn(
       ResponseEntity.unprocessableEntity().body( "{" +
         "   \"error\" : {" +
@@ -149,7 +149,7 @@ import static org.mockito.Mockito.*;
     verify( service, times( 1 ) ).getReportForCityAndDate( Mockito.any(), Mockito.any() );
   }
   
-  @Test public void testGetSpecificPlaceDataForAnInvalidDateAndInvalidCity() {
+  @Test  void testGetSpecificPlaceDataForAnInvalidDateAndInvalidCity() {
     when( service.getReportForCityAndDate( Mockito.any(), Mockito.any() ) ).thenReturn(
       ResponseEntity.unprocessableEntity().body( "{" +
         "   \"error\" : {" +
@@ -171,7 +171,7 @@ import static org.mockito.Mockito.*;
     verify( service, times( 1 ) ).getReportForCityAndDate( Mockito.any(), Mockito.any() );
   }
   
-  @Test public void testGetWorldDataForAnValidDate() {
+  @Test  void testGetWorldDataForAnValidDate() {
     SummaryReport summaryReport = new SummaryReport( new SummaryReportData(
       "2020-04-11", "2020-04-11 22:52:46", (long) 1771514L, (long) 79795L, 108502L, (long) 5977L, (long) 402110L,
       26014L, 1260902L, 47804L, (float) 0.0612
@@ -191,7 +191,7 @@ import static org.mockito.Mockito.*;
     verify( service, times( 1 ) ).getReportForWorld( Mockito.any() );
   }
   
-  @Test public void testGetWorldDataForAnInvalidDate() {
+  @Test  void testGetWorldDataForAnInvalidDate() {
     when( service.getReportForWorld( Mockito.any() ) ).thenReturn(
       ResponseEntity.unprocessableEntity().body( "{" +
         "   \"error\" : {" +
@@ -212,7 +212,7 @@ import static org.mockito.Mockito.*;
     verify( service, times( 1 ) ).getReportForWorld( Mockito.any() );
   }
   
-  @Test public void testGetWorldDataForAnEmptyDate() {
+  @Test  void testGetWorldDataForAnEmptyDate() {
     String todaysDate =
       LocalDateTime.now().format( DateTimeFormatter.ofPattern( "yyyy-MM-dd" ) );
     SummaryReport summaryReport = new SummaryReport( new SummaryReportData(

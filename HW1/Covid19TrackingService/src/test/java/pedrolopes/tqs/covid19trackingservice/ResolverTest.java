@@ -20,7 +20,7 @@ import java.io.IOException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@ExtendWith(MockitoExtension.class) public class ResolverTest {
+@ExtendWith(MockitoExtension.class)  class ResolverTest {
   
   private static final String ERROR_RESPONSE = "{\"error\":{\"date\":[\"The date does not match the format Y-m-d" +
     ".\"]}}";
@@ -35,7 +35,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
     "{\"data\":{\"date\":\"2020-04-11\",\"last_update\":\"2020-04-1122:52:46\",\"confirmed\":1771514," +
       "\"confirmed_diff\":79795,\"deaths\":108502,\"deaths_diff\":5977,\"recovered\":402110,\"recovered_diff\":26014," +
       "\"active\":1260902,\"active_diff\":47804,\"fatality_rate\":0.0612}}";
-  public MockWebServer mockWebServer;
+   MockWebServer mockWebServer;
   
   
   Resolver resolver;
@@ -96,7 +96,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
       .INTERNAL_SERVER_ERROR.value() );
   }
   
-  @Test public void testWhenAPIReturnsErrorMessageReturnErrorToo() {
+  @Test  void testWhenAPIReturnsErrorMessageReturnErrorToo() {
     MockResponse mockedResponse =
       new MockResponse().setBody( ERROR_RESPONSE ).setResponseCode( 422 )
                         .addHeader( "Content-Type", "application/json; charset=utf-8" );
@@ -114,7 +114,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
   }
   
   @Test
-  public void testWhenApiReturnsEmptyBodyReturnErrorMessage() {
+   void testWhenApiReturnsEmptyBodyReturnErrorMessage() {
     
     MockResponse mockedResponse =
       new MockResponse().addHeader( "Content-Type", "application/json; charset=utf-8" );
@@ -132,7 +132,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
   }
   
   @Test
-  public void testWhenAskedForURLWithValidPath() {
+   void testWhenAskedForURLWithValidPath() {
     
     assertThat( resolver.getURLForSpecificCityAndDate( "Autauga", "2020-04-11" ) ).contains( "reports?city_name" +
       "=Autauga&date" +
