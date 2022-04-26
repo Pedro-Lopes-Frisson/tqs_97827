@@ -65,7 +65,7 @@ public class Resolver {
       return ResponseEntity.internalServerError().body( "{ \"error\" : \"Service is temporary unavailable." +
         "Please try again later\"}" );
     }
-    
+  
     if ( reportResponse.code() != 200 ) {
       try {
         return ResponseEntity.status( reportResponse.code() ).body( reportResponse.errorBody().string() );
@@ -74,10 +74,7 @@ public class Resolver {
           "again\"}" );
       }
     }
-    
-    if ( reportResponse.body() == null ) {
-      throw new RuntimeException( "Response Body is null" ); // Should not be thrown
-    }
+  
     // save object in cache
     return ResponseEntity.ok( reportResponse.body() );
   }
@@ -107,10 +104,6 @@ public class Resolver {
       }
     }
     
-    if ( reportResponse.body() == null ) {
-      return ResponseEntity.badRequest().body( "{\"error\": \"There is no such data, please try " +
-        "again\"}" );
-    }
     
     
     return ResponseEntity.ok( reportResponse.body() );
