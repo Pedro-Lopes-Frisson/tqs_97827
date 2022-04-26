@@ -106,7 +106,36 @@ public class CacheModelDataJpaTest {
                        .collect( Collectors.toList() ) ).isEqualTo(
       listOriginal.stream().filter( (Cache c) -> c.getTimeRequestWasMade() < clockFutureFuture40001.millis() ).map( Cache::getTimeRequestWasMade ).collect(
         Collectors.toList()) );
+  }
   
+  @Test
+  public void testGiven3CachedObjectsSavedWhenDeleteOneOfThemTheReaminingShouldRemainThere(){
+  
+    // the 0 duration returns to the same clock:
+    SummaryReport summaryReport = new SummaryReport( new SummaryReportData(
+      "2020-04-11", "2020-04-11 22:52:46", (long) 1771514L, (long) 79795L, 108502L, (long) 5977L, (long) 402110L,
+      26014L, 1260902L, 47804L, (float) 0.0612
+    ) );
+  
+    StringBuilder url =  new StringBuilder().append( "https://covid-19-statistics.p.rapidapi.com/reports/total?date=");
+    long startDelay = 30000; // delay of the first Cache
+    long fixedDelay = 10000; // delay between the other ones
+  
+    ArrayList<Cache> listOriginal = new ArrayList<>();
+    listOriginal.add( new Cache( startDelay, url.append( "2020-04-11" ).toString(), summaryReport ) );
+    listOriginal.add( new Cache( startDelay + fixedDelay, url.append( "2020-04-12" ).toString(), summaryReport ) );
+    listOriginal.add( new Cache( startDelay + 2 * fixedDelay, url.append( "2020-04-13" ).toString(), summaryReport ) );
+  
+    entityManager.persistAndFlush( listOriginal.get( 0 ) );
+    entityManager.persistAndFlush( listOriginal.get( 1 ) );
+    entityManager.persistAndFlush( listOriginal.get( 2 ) );
+  
+  
+    repository.deleteByUrlRequest(url.append( "2020-04-11" ).toString());
+    Cache removedObject = listOriginal.remove( 0 );
+  
+    //No Objects Should have been returned
+    assertThat(removedObject).isNotIn( listOriginal );
   }
   
 }
