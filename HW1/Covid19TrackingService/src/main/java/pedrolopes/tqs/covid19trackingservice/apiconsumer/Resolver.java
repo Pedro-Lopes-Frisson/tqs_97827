@@ -24,18 +24,6 @@ public class Resolver {
     new OkHttpClient.Builder().readTimeout( 60, TimeUnit.SECONDS ).connectTimeout( 60, TimeUnit.SECONDS ).build();
   final APIJonhsHopkinsCSSE retrofit;
   
-  public Resolver() {
-    
-    retrofit = new Retrofit.Builder().baseUrl( DEFAULTAPI )
-                                     .addConverterFactory( GsonConverterFactory.create() )
-                                     .client( okHttpClient ).build()
-                                     .create( APIJonhsHopkinsCSSE.class );
-  }
-  
-  public Resolver( APIJonhsHopkinsCSSE retrofit ) {
-    
-    this.retrofit = retrofit;
-  }
   
   public Resolver( String url ) {
     
