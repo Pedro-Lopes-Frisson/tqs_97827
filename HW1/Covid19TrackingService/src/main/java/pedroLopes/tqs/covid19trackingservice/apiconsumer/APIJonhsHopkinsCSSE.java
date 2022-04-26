@@ -1,6 +1,7 @@
 package pedroLopes.tqs.covid19trackingservice.apiconsumer;
 
 
+import org.springframework.stereotype.Component;
 import pedroLopes.tqs.covid19trackingservice.models.RootReport;
 import pedroLopes.tqs.covid19trackingservice.models.SummaryReport;
 import retrofit2.Call;
@@ -8,6 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Query;
 
+@Component
 public interface APIJonhsHopkinsCSSE {
   @Headers({
     "X-RapidAPI-Host: covid-19-statistics.p.rapidapi.com",
