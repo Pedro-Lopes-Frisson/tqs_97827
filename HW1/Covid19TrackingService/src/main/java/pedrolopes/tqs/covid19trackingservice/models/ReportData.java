@@ -36,6 +36,7 @@ public class ReportData implements Serializable {
   @JsonProperty("active_diff")
   int activeDiff;
   @SerializedName("fatality_rate")
+  @JsonProperty("fatality_rate")
   double fatalityRate;
   RegionReportData region;
 }

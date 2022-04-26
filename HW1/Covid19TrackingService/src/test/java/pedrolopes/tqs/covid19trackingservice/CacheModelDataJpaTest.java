@@ -9,13 +9,12 @@ import pedrolopes.tqs.covid19trackingservice.repository.CacheRepository;
 
 import java.time.*;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import static java.time.Instant.ofEpochMilli;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
- class CacheModelDataJpaTest {
+class CacheModelDataJpaTest {
   
   
   @Autowired
@@ -25,7 +24,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
   private CacheRepository repository;
   
   @Test
-   void savingDataOfSpecificCountryAtDate_thenWhenFindDataReturnData() {
+  void savingDataOfSpecificCountryAtDate_thenWhenFindDataReturnData() {
     ReportData reportData =
       new ReportData( "2020-04-11", 3217, 92, 0, 270, 12,
         0, "2020-04-11 22:45:33", 3125, 258, 0.0286
@@ -43,7 +42,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
   }
   
   @Test
-   void savingDataOfWorldReportAtDate_thenWhenFindDataReturnData() {
+  void savingDataOfWorldReportAtDate_thenWhenFindDataReturnData() {
     
     SummaryReport summaryReport = new SummaryReport( new SummaryReportData(
       "2020-04-11", "2020-04-11 22:52:46", (long) 1771514L, (long) 79795L, 108502L, (long) 5977L, (long) 402110L,
@@ -63,7 +62,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
   }
   
   @Test
-   void testSavingMultipleCacheObjectAndCallingFindLessThanTTLShouldReturnOnlyTheCorrectValues() {
+  void testSavingMultipleCacheObjectAndCallingFindLessThanTTLShouldReturnOnlyTheCorrectValues() {
     Instant.now( Clock.fixed(
       Instant.parse( "2018-08-22T10:00:00Z" ),
       ZoneOffset.UTC ) );
@@ -75,13 +74,13 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
       26014L, 1260902L, 47804L, (float) 0.0612
     ) );
     
-    StringBuilder url =  new StringBuilder().append( "https://covid-19-statistics.p.rapidapi.com/reports/total?date=");
+    StringBuilder url = new StringBuilder().append( "https://covid-19-statistics.p.rapidapi.com/reports/total?date=" );
     long startDelay = 30000; // delay of the first Cache
     long fixedDelay = 10000; // delay between the other ones
     
     ArrayList<Cache> listOriginal = new ArrayList<>();
     // Subtract ttl's so that time request was made is lower then current Time in millis
-    listOriginal.add( new Cache( -System.currentTimeMillis(), url.append( "2020-04-11" ).toString(), summaryReport ) );
+    listOriginal.add( new Cache( - System.currentTimeMillis(), url.append( "2020-04-11" ).toString(), summaryReport ) );
     
     
     listOriginal.add( new Cache( url.append( "2020-04-12" ).toString(), summaryReport ) );
@@ -92,15 +91,15 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
     entityManager.persistAndFlush( listOriginal.get( 2 ) );
     
     Clock clockFuture10Millis = Clock.offset( constantClock, Duration.ofMillis( 10 ) ); // go 10 millis to the future
-  
+    
     ArrayList<Cache> listCachedObjects =
       (ArrayList<Cache>) repository.findBytimeRequestWasMadeLessThan( clockFuture10Millis.millis() );
     
     //No Objects Should have been returned
-    assertThat(listCachedObjects.size()).isEqualTo( 1 );
-  
+    assertThat( listCachedObjects.size() ).isEqualTo( 1 );
+    
     Clock clockFutureFuture40001 = Clock.offset( constantClock, Duration.ofMillis( 40001 ) );
-  
+    
     listCachedObjects =
       (ArrayList<Cache>) repository.findBytimeRequestWasMadeLessThan( clockFuture10Millis.millis() );
     
@@ -109,33 +108,50 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
   }
   
   @Test
-   void testGiven3CachedObjectsSavedWhenDeleteOneOfThemTheReaminingShouldRemainThere(){
-  
+  void testGiven3CachedObjectsSavedWhenDeleteOneOfThemTheReaminingShouldRemainThere() {
+    
     // the 0 duration returns to the same clock:
     SummaryReport summaryReport = new SummaryReport( new SummaryReportData(
       "2020-04-11", "2020-04-11 22:52:46", (long) 1771514L, (long) 79795L, 108502L, (long) 5977L, (long) 402110L,
       26014L, 1260902L, 47804L, (float) 0.0612
     ) );
-  
-    StringBuilder url =  new StringBuilder().append( "https://covid-19-statistics.p.rapidapi.com/reports/total?date=");
+    
+    StringBuilder url = new StringBuilder().append( "https://covid-19-statistics.p.rapidapi.com/reports/total?date=" );
     long startDelay = 30000; // delay of the first Cache
     long fixedDelay = 10000; // delay between the other ones
-  
+    
     ArrayList<Cache> listOriginal = new ArrayList<>();
     listOriginal.add( new Cache( startDelay, url.append( "2020-04-11" ).toString(), summaryReport ) );
     listOriginal.add( new Cache( startDelay + fixedDelay, url.append( "2020-04-12" ).toString(), summaryReport ) );
     listOriginal.add( new Cache( startDelay + 2 * fixedDelay, url.append( "2020-04-13" ).toString(), summaryReport ) );
-  
+    
     entityManager.persistAndFlush( listOriginal.get( 0 ) );
     entityManager.persistAndFlush( listOriginal.get( 1 ) );
     entityManager.persistAndFlush( listOriginal.get( 2 ) );
-  
-  
-    repository.deleteByUrlRequest(url.append( "2020-04-11" ).toString());
+    
+    
+    repository.deleteByUrlRequest( url.append( "2020-04-11" ).toString() );
     Cache removedObject = listOriginal.remove( 0 );
-  
+    
     //No Objects Should have been returned
-    assertThat(removedObject).isNotIn( listOriginal );
+    assertThat( removedObject ).isNotIn( listOriginal );
+  }
+  
+  @Test
+  void deletingAnEntityShouldResultInItsDisappearanceFromThatTable() {
+    SummaryReport summaryReport = new SummaryReport( new SummaryReportData(
+      "2020-04-11", "2020-04-11 22:52:46", (long) 1771514L, (long) 79795L, 108502L, (long) 5977L, (long) 402110L,
+      26014L, 1260902L, 47804L, (float) 0.0612
+    ) );
+    
+    String url =
+      "https://covid-19-statistics.p.rapidapi.com/reports/total?date=2020-04-11";
+    Cache objectToDelete = new Cache( url, summaryReport );
+    entityManager.persistAndFlush( objectToDelete );
+    
+    assertThat( repository.findByUrlRequest( url ) ).isNotNull();
+    repository.delete(objectToDelete);
+    assertThat( repository.findByUrlRequest( url ) ).isNull();
   }
   
 }

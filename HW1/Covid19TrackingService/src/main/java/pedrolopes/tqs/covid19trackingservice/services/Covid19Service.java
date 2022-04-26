@@ -39,7 +39,6 @@ import java.util.Objects;
     
     // save object in cache if response has a body which isn't null and if the status code is 200
     if ( reportResponse.getStatusCode() == HttpStatus.OK ) {
-      assert cacheManager != null;
       rootReportSaved = (RootReport) cacheManager.saveCache(
         new Cache( Objects.requireNonNull( urlCall ),
           (Serializable) Objects.requireNonNull( reportResponse.getBody() ) ) ).getValue();
