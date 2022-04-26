@@ -25,6 +25,14 @@ public class Resolver {
   final APIJonhsHopkinsCSSE retrofit;
   
   
+  public Resolver(){
+  
+    retrofit = new Retrofit.Builder().baseUrl( DEFAULTAPI )
+                                     .addConverterFactory( GsonConverterFactory.create() )
+                                     .client( okHttpClient ).build()
+                                     .create( APIJonhsHopkinsCSSE.class );
+  }
+  
   public Resolver( String url ) {
     
     retrofit = new Retrofit.Builder().baseUrl( url )
@@ -87,7 +95,4 @@ public class Resolver {
     return ResponseEntity.ok( reportResponse.body() );
   }
   
-  public APIJonhsHopkinsCSSE getRetrofit() {
-    return this.retrofit;
-  }
 }
