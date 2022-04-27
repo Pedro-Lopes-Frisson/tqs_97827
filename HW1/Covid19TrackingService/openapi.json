@@ -1,0 +1,104 @@
+{
+   "components" : {},
+   "info" : {
+      "title" : "OpenAPI definition",
+      "version" : "v0"
+   },
+   "openapi" : "3.0.1",
+   "paths" : {
+      "/api/cache" : {
+         "get" : {
+            "operationId" : "getCache",
+            "responses" : {
+               "200" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "type" : "object"
+                        }
+                     }
+                  },
+                  "description" : "OK"
+               }
+            },
+            "tags" : [
+               "rest-controller-covid-19"
+            ]
+         }
+      },
+      "/api/reports" : {
+         "get" : {
+            "operationId" : "getFullDayReportFor",
+            "parameters" : [
+               {
+                  "in" : "query",
+                  "name" : "city",
+                  "required" : false,
+                  "schema" : {
+                     "type" : "string"
+                  }
+               },
+               {
+                  "in" : "query",
+                  "name" : "date",
+                  "required" : false,
+                  "schema" : {
+                     "type" : "string"
+                  }
+               }
+            ],
+            "responses" : {
+               "200" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "type" : "object"
+                        }
+                     }
+                  },
+                  "description" : "OK"
+               }
+            },
+            "tags" : [
+               "rest-controller-covid-19"
+            ]
+         }
+      },
+      "/api/reports/total" : {
+         "get" : {
+            "operationId" : "getWorldWideReportForDate",
+            "parameters" : [
+               {
+                  "in" : "query",
+                  "name" : "date",
+                  "required" : false,
+                  "schema" : {
+                     "type" : "string"
+                  }
+               }
+            ],
+            "responses" : {
+               "200" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "type" : "object"
+                        }
+                     }
+                  },
+                  "description" : "OK"
+               }
+            },
+            "tags" : [
+               "rest-controller-covid-19"
+            ]
+         }
+      }
+   },
+   "servers" : [
+      {
+         "description" : "Generated server url",
+         "url" : "http://localhost:8000"
+      }
+   ]
+}
