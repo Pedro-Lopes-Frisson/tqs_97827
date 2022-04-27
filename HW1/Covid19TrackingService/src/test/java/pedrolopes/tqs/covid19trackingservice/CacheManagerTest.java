@@ -44,7 +44,7 @@ class CacheManagerTest {
     assertThat( cachedObject ).isNotNull();
     assertThat( cacheManager.getNumberHits() ).isEqualTo( 1 );
     assertThat( cacheManager.getNumberOfRequests() ).isEqualTo( 1 );
-    assertThat( cacheManager.getNumberMisses() ).isEqualTo( 0 );
+    assertThat( cacheManager.getNumberMisses() ).isZero();
     verify( repository, times( 1 ) ).findByUrlRequest( urlWorldReport );
   }
   

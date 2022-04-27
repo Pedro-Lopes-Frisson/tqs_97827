@@ -22,7 +22,7 @@ function MainNav(){
               <Nav.Link>WorldWide</Nav.Link>
             </LinkContainer>
             <Nav className="mr-auto">
-              <LinkContainer to="/cityList">
+              <LinkContainer to="/citiesList">
                 <Nav.Link>City List</Nav.Link>
               </LinkContainer>
             </Nav>

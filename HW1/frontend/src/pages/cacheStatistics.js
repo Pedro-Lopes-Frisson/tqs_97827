@@ -38,16 +38,16 @@ function CacheStatistics(){
         </Row>
         <Row>
           <Col>
-            Requests
-            {data["requests"]}
+            <p>Requests</p>
+            <p>{data["requests"]}</p>
           </Col>
           <Col>
-            Misses
-            {data["misses"]}
+            <p>Misses</p>
+            <p>{data["misses"]}</p>
           </Col>
           <Col>
-            Hits
-            {data["hits"]}
+            <p>Hits</p>
+            <p>{data["hits"]}</p>
           </Col>
         </Row>
       </Container>

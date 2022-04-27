@@ -11,7 +11,7 @@ function App() {
       <MainNav />
 			<Routes>
 				<Route path='/' exact element={<Home />} />
-				<Route path='/cityList' exact element={<CityList />} />
+				<Route path='/citiesList' exact element={<CityList />} />
 				<Route path='/cache' exact element={<CacheStatistics />} />
 			</Routes>
 		</Router>

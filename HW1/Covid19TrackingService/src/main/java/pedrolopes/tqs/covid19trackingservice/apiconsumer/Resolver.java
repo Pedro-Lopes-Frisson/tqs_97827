@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class Resolver {
   private static final Logger log = LoggerFactory.getLogger( Resolver.class );
-  final static String DEFAULTAPI = "https://covid-19-statistics.p.rapidapi.com/";
+  static final String DEFAULTAPI = "https://covid-19-statistics.p.rapidapi.com/";
   final OkHttpClient okHttpClient =
     new OkHttpClient.Builder().readTimeout( 60, TimeUnit.SECONDS ).connectTimeout( 60, TimeUnit.SECONDS ).build();
   final APIJonhsHopkinsCSSE retrofit;
