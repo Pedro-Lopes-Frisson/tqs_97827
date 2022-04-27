@@ -37,4 +37,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B test integration-test verify  org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Pedro-Lopes-Frisson_tqs_97827
+        run: mvn -B test -Dtest=\!CacheTest integration-test verify  org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Pedro-Lopes-Frisson_tqs_97827
