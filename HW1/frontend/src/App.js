@@ -10,8 +10,8 @@ function App() {
     <Router>
       <MainNav />
 			<Routes>
-				<Route path='/' exact element={<Home />} />
-				<Route path='/citiesList' exact element={<CityList />} />
+				<Route path='/world' exact element={<Home />} />
+				<Route path='/' exact element={<CityList />} />
 				<Route path='/cache' exact element={<CacheStatistics />} />
 			</Routes>
 		</Router>

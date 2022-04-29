@@ -18,11 +18,11 @@ function MainNav(){
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <LinkContainer to="/">
+            <LinkContainer to="/world">
               <Nav.Link>WorldWide</Nav.Link>
             </LinkContainer>
             <Nav className="mr-auto">
-              <LinkContainer to="/citiesList">
+              <LinkContainer to="/">
                 <Nav.Link>City List</Nav.Link>
               </LinkContainer>
             </Nav>

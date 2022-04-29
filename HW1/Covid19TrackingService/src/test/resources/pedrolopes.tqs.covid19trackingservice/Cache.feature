@@ -7,7 +7,7 @@ Feature: Get Basic Cache Statistics
     And Close Browser
 
   Scenario: Two requests were made
-    When I go over the page 'localhost:3000/citiesList'
+    When I go over the page 'localhost:3000/'
     And Type in 'Autauga'
     And Select Option Two Days Ago
     And Click On Search Button
